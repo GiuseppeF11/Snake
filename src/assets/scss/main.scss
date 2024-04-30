@@ -4,7 +4,17 @@
 // Import all of Bootstrap's CSS
 @import "bootstrap/scss/bootstrap";
 
-h1 {
-    text-align: center;
-    color: lightcoral;
+header {
+    height: 10vh;
+    box-shadow: 0 0 20px;
+}
+
+main {
+    min-height: 80vh;
+    padding: 1rem;
+}
+
+footer {
+    height: 10vh;
+    box-shadow: 0 0 20px;
 }
