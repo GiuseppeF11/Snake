@@ -15,7 +15,7 @@ export default {
     <header class="row align-items-center g-0 px-3">
         <div class="col-auto">
             <h1 class="font-bold">
-                TETRIS!
+                SNAKE
             </h1>
         </div>
         <div class="col d-flex justify-content-end ">

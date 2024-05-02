@@ -1,5 +1,5 @@
 <script>
-import Tetris_Body from './Tetris_Body.vue';
+import Snake_Body from './Snake_Body.vue';
 
 export default {
     data() {
@@ -10,7 +10,7 @@ export default {
         };
     },
     components: {
-        Tetris_Body,
+        Snake_Body,
     }, 
     methods: {
         // Funzione per mute/unmute
@@ -48,7 +48,7 @@ export default {
             <audio ref="audioPlayer" :src="audioSource" loop></audio>
         </section>
         <section>
-            <Tetris_Body/>
+            <Snake_Body/>
         </section>
     </main>
 </template>
