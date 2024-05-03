@@ -8,12 +8,12 @@
     <canvas v-if="canvasReady" ref="canvas" :width="canvasSize" :height="canvasSize" class="screen m-auto"></canvas>
     <div v-if="showingAlert || backgroundBlocked" class="overlay" @click="restartGame">
       <div class="message">
-        <p v-if="isGameWon">HAI VINTO! Vuoi giocare di nuovo?</p>
-        <p v-else>HAI PERSO! Vuoi riprovare?</p>
-        <button>OK</button>
+        <p v-if="isGameWon" class="won_message">HAI VINTO!</p>
+        <p v-else class="lose_message">HAI PERSO!</p>
+        <button class="btn btn-success w-25 mx-auto">Riprova</button>
       </div>
     </div>
-    <button v-if="!isGameRunning" @click="startGame">Play</button>
+    <button v-if="!isGameRunning" @click="startGame" class="play-button">PLAY</button>
   </div>
 </template>
 
@@ -24,12 +24,12 @@ export default {
     return {
       canvasReady: false,
       blockSize: 20,
-      numBlocksX: 10,
-      numBlocksY: 10,
-      difficulty: 'easy',
+      numBlocksX: 1,
+      numBlocksY: 1,
+      difficulty: 'medium',
       difficulties: {
-        easy: { numBlocksX: 10, numBlocksY: 10},
-        medium: { numBlocksX: 15, numBlocksY: 15},
+        easy: { numBlocksX: 5, numBlocksY: 5},
+        medium: { numBlocksX: 10, numBlocksY: 10},
         hard: { numBlocksX: 20, numBlocksY: 20 }
       },
       ctx: null,
@@ -67,11 +67,11 @@ export default {
     });
   },
   methods: {
-    /* changeDifficulty() {
+    changeDifficulty() {
       this.numBlocksX = this.difficulties[this.difficulty].numBlocksX;
       this.numBlocksY = this.difficulties[this.difficulty].numBlocksY;
       this.restartGame();
-    }, */
+    },
     startGame() {
       this.isGameRunning = true;
       this.gameInterval = setInterval(this.updateGame, this.currentInterval);
@@ -194,7 +194,7 @@ export default {
       this.ctx.clearRect(0, 0, this.canvasSize, this.canvasSize);
       this.ctx.fillStyle = 'red';
       this.ctx.fillRect(this.food.x * this.blockSize, this.food.y * this.blockSize, this.blockSize, this.blockSize);
-      this.ctx.fillStyle = 'green';
+      this.ctx.fillStyle = '#4CAF50';
       this.snake.forEach(segment => {
         this.ctx.fillRect(segment.x * this.blockSize, segment.y * this.blockSize, this.blockSize, this.blockSize);
       });
@@ -247,10 +247,10 @@ export default {
 
 <style scoped>
 .screen {
+  background-color: rgb(216, 216, 216);
   width: 450px;
   height: 450px;
-  border: 20px inset rgb(99, 99, 99);
-  border-radius: 20px;
+  border: 10px solid rgb(99, 99, 99);
 }
 
 .overlay {
@@ -266,7 +266,14 @@ export default {
 }
 
 .message {
-  background-color: white;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url(https://content.imageresizer.com/images/memes/Squidward-cleaning-loser-meme-2.jpg);
+  background-size: cover;
+  min-width: 400px;
+  min-height: 200px;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -274,5 +281,39 @@ export default {
 
 .message p {
   margin-bottom: 10px;
+}
+
+.play-button {
+  background-color: #d5d5d5;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px; /* Ho modificato la dimensione del font qui */
+  margin: 0 auto; /* Questa regola centrerà orizzontalmente il pulsante */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 12px;
+  position: absolute;
+  left: 50%; /* Posiziona il pulsante al 50% rispetto al bordo sinistro del suo contenitore */
+  top: 50%; /* Posiziona il pulsante al 50% rispetto al bordo superiore del suo contenitore */
+  transform: translate(-50%, -50%); /* Sposta il pulsante all'indietro del 50% della sua larghezza e altezza rispetto al suo centro */
+  font-weight: 700;
+}
+
+
+.play-button:hover {
+  color: white;
+  background-color: #45a049; /* Darker Green */
+}
+
+
+.lose_message {
+  font-size: 30px;
+  font-weight: 700;
+  color: antiquewhite;
+  text-shadow: 0 0 20px black;
 }
 </style>

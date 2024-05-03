@@ -13,18 +13,18 @@ export default {
 
 <template>
     <header class="row align-items-center g-0 px-3">
-        <div class="col-auto">
+        <div class="col text-center ">
             <h1 class="font-bold">
                 SNAKE
             </h1>
         </div>
-        <div class="col d-flex justify-content-end ">
+        <!-- <div class="col d-flex justify-content-end ">
             <div class="row">
                 <div class="col">
-                    <span class="btn btn-outline-secondary">Gioca</span>
+                    
                 </div>
             </div>
-        </div>
+        </div> -->
 
         
     </header>

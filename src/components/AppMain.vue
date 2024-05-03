@@ -32,7 +32,7 @@ export default {
 </script>
 
 <template>
-    <main>
+    <main class="main-container">
         <section class="audio-player-container row ">
             <div class="audio-controls">
                 <!-- Bottone per mute/unmute -->
@@ -54,6 +54,11 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+
+.main-container{
+    background-image: url(https://img.freepik.com/free-vector/tropical-leaves-background_23-2148532243.jpg?size=626&ext=jpg&ga=GA1.1.632798143.1712707200&semt=ais);
+    /* filter: brightness(10%); */
+}
 
 .audio-controls button {
     background: none;
