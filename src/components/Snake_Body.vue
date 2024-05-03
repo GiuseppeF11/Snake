@@ -6,6 +6,15 @@
       <option value="hard">Difficile</option>
     </select>
     <canvas v-if="canvasReady" ref="canvas" :width="canvasSize" :height="canvasSize" class="screen m-auto"></canvas>
+    <div v-if="showingAlert" class="alert-overlay">
+      <div class="alert-message">
+        <p>HAI PERSO!</p>
+        <button @click="restartGame">Riprovare?</button>
+      </div>
+    </div>
+    <div>
+      {{ score }}
+    </div>
   </div>
 </template>
 
@@ -124,11 +133,6 @@ export default {
 
       if (newX < 0 || newX >= this.numBlocksX || newY < 0 || newY >= this.numBlocksY || this.isCollidingWithBody(newX, newY)) {
         this.showingAlert = true;
-        if (confirm('HAI PERSO! Vuoi riprovare?')) {
-          this.restartGame();
-        } else {
-          clearInterval(this.gameInterval);
-        }
         return;
       }
 
@@ -216,5 +220,24 @@ export default {
   height: 500px;
   border: 20px inset rgb(99, 99, 99);
   border-radius: 20px;
+}
+
+.alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert-message {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
 }
 </style>
