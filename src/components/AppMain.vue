@@ -5,7 +5,7 @@ export default {
     data() {
         return {
             isMuted: false,
-            audioSource: "/public/sound/Tetris 99 - Main Theme.mp3", // Sostituisci con il percorso del tuo file audio
+            audioSource: "/public/sound/Roku Snake OST - Main Theme.mp3", // Sostituisci con il percorso del tuo file audio
             isAudioPlaying: false // Aggiungi la variabile per tracciare lo stato della riproduzione audio
         };
     },
