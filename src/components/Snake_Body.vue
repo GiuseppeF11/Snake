@@ -6,15 +6,14 @@
       <option value="hard">Difficile</option>
     </select>
     <canvas v-if="canvasReady" ref="canvas" :width="canvasSize" :height="canvasSize" class="screen m-auto"></canvas>
-    <div v-if="showingAlert" class="alert-overlay">
-      <div class="alert-message">
-        <p>HAI PERSO!</p>
-        <button @click="restartGame">Riprovare?</button>
+    <div v-if="showingAlert || backgroundBlocked" class="overlay" @click="restartGame">
+      <div class="message">
+        <p v-if="isGameWon">HAI VINTO! Vuoi giocare di nuovo?</p>
+        <p v-else>HAI PERSO! Vuoi riprovare?</p>
+        <button>OK</button>
       </div>
     </div>
-    <div>
-      {{ score }}
-    </div>
+    <button v-if="!isGameRunning" @click="startGame">Play</button>
   </div>
 </template>
 
@@ -25,9 +24,14 @@ export default {
     return {
       canvasReady: false,
       blockSize: 20,
-      numBlocksX: 25,
-      numBlocksY: 25,
-      difficulty: 'easy', // Impostazione predefinita della difficoltà
+      numBlocksX: 10,
+      numBlocksY: 10,
+      difficulty: 'easy',
+      difficulties: {
+        easy: { numBlocksX: 10, numBlocksY: 10},
+        medium: { numBlocksX: 15, numBlocksY: 15},
+        hard: { numBlocksX: 20, numBlocksY: 20 }
+      },
       ctx: null,
       snake: [{ x: 10, y: 10 }],
       food: { x: 15, y: 15 },
@@ -38,6 +42,9 @@ export default {
       initialInterval: 100,
       keysPressed: new Set(),
       showingAlert: false,
+      isGameWon: false,
+      backgroundBlocked: false,
+      isGameRunning: false
     };
   },
   computed: {
@@ -57,32 +64,28 @@ export default {
         return;
       }
       this.ctx = canvas.getContext('2d');
-      this.startGame();
     });
   },
   methods: {
-    changeDifficulty() {
-      switch (this.difficulty) {
-        case 'easy':
-          this.numBlocksX = 5;
-          this.numBlocksY = 5;
-          break;
-        case 'medium':
-          this.numBlocksX = 10;
-          this.numBlocksY = 10;
-          break;
-        case 'hard':
-          this.numBlocksX = 20;
-          this.numBlocksY = 20;
-          break;
-        default:
-          break;
-      }
-      // Riavvia il gioco con la nuova difficoltà
+    /* changeDifficulty() {
+      this.numBlocksX = this.difficulties[this.difficulty].numBlocksX;
+      this.numBlocksY = this.difficulties[this.difficulty].numBlocksY;
       this.restartGame();
-    },
+    }, */
     startGame() {
+      this.isGameRunning = true;
       this.gameInterval = setInterval(this.updateGame, this.currentInterval);
+
+      // Aggiorna le dimensioni del campo e la posizione di partenza
+      this.numBlocksX = this.difficulties[this.difficulty].numBlocksX;
+      this.numBlocksY = this.difficulties[this.difficulty].numBlocksY;
+      this.snake = [{ x: Math.floor(this.numBlocksX / 2), y: Math.floor(this.numBlocksY / 2) }];
+      
+      // Aggiorna la posizione del cibo
+      this.food = {
+        x: Math.floor(Math.random() * this.numBlocksX),
+        y: Math.floor(Math.random() * this.numBlocksY)
+      };
     },
     updateGame() {
       const lastPressedKey = Array.from(this.keysPressed).pop();
@@ -112,6 +115,11 @@ export default {
       }
       this.moveSnake();
       this.draw();
+
+      /* if (this.foodsEaten % 3 === 0 && this.foodsEaten !== 0) {
+        clearInterval(this.gameInterval);
+        this.gameInterval = setInterval(this.updateGame, this.currentInterval);
+      } */
     },
     moveSnake() {
       let newX = this.snake[0].x;
@@ -131,8 +139,18 @@ export default {
           break;
       }
 
+      // Controlliamo se lo snake ha vinto
+      if (this.snake.length === this.numBlocksX * this.numBlocksY) {
+        this.isGameWon = true;
+        this.backgroundBlocked = true;
+        clearInterval(this.gameInterval);
+        return;
+      }
+
       if (newX < 0 || newX >= this.numBlocksX || newY < 0 || newY >= this.numBlocksY || this.isCollidingWithBody(newX, newY)) {
         this.showingAlert = true;
+        this.backgroundBlocked = true;
+        clearInterval(this.gameInterval);
         return;
       }
 
@@ -182,26 +200,39 @@ export default {
       });
     },
     handleKeyPress(event) {
-      if (event.key.startsWith('Arrow') && !this.showingAlert) {
+      if (event.key.startsWith('Arrow') && !this.showingAlert && this.isGameRunning) {
         this.keysPressed.add(event.key);
         event.preventDefault();
       }
     },
     handleKeyUp(event) {
-      if (event.key.startsWith('Arrow')) {
+      if (event.key.startsWith('Arrow') && this.isGameRunning) {
         this.keysPressed.delete(event.key);
       }
     },
     restartGame() {
-      this.showingAlert = false;
-      clearInterval(this.gameInterval);
-      this.snake = [{ x: 10, y: 10 }];
-      this.food = { x: 15, y: 15 };
-      this.direction = 'right';
-      this.score = 0;
-      this.foodsEaten = 0;
-      this.startGame();
-    }
+    this.showingAlert = false;
+    this.isGameWon = false;
+    this.backgroundBlocked = false;
+    this.isGameRunning = false;
+    clearInterval(this.gameInterval);
+    
+    // Aggiorna le dimensioni del campo e la posizione di partenza
+    this.numBlocksX = this.difficulties[this.difficulty].numBlocksX;
+    this.numBlocksY = this.difficulties[this.difficulty].numBlocksY;
+    this.snake = [{ x: Math.floor(this.numBlocksX / 2), y: Math.floor(this.numBlocksY / 2) }];
+    
+    // Aggiorna la posizione del cibo
+    this.food = {
+      x: Math.floor(Math.random() * this.numBlocksX),
+      y: Math.floor(Math.random() * this.numBlocksY)
+    };
+  
+  this.direction = 'right';
+  this.score = 0;
+  this.foodsEaten = 0;
+}
+
   },
   created() {
     window.addEventListener('keydown', this.handleKeyPress);
@@ -216,13 +247,13 @@ export default {
 
 <style scoped>
 .screen {
-  width: 500px;
-  height: 500px;
+  width: 450px;
+  height: 450px;
   border: 20px inset rgb(99, 99, 99);
   border-radius: 20px;
 }
 
-.alert-overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -234,10 +265,14 @@ export default {
   align-items: center;
 }
 
-.alert-message {
+.message {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
-  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.message p {
+  margin-bottom: 10px;
 }
 </style>
