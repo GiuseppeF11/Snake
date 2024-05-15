@@ -195,14 +195,37 @@ export default {
       return false;
     },
     draw() {
-      this.ctx.clearRect(0, 0, this.canvasSize, this.canvasSize);
-      this.ctx.fillStyle = 'red';
-      this.ctx.fillRect(this.food.x * this.blockSize, this.food.y * this.blockSize, this.blockSize, this.blockSize);
-      this.ctx.fillStyle = '#4CAF50';
-      this.snake.forEach(segment => {
-        this.ctx.fillRect(segment.x * this.blockSize, segment.y * this.blockSize, this.blockSize, this.blockSize);
-      });
-    },
+  this.ctx.clearRect(0, 0, this.canvasSize, this.canvasSize);
+  
+  // Disegna il cibo
+  this.ctx.fillStyle = 'red';
+  this.ctx.fillRect(this.food.x * this.blockSize, this.food.y * this.blockSize, this.blockSize, this.blockSize);
+  
+  // Disegna lo snake
+  this.ctx.fillStyle = '#C5C5C5';
+  this.snake.forEach((segment, index) => {
+    if (index === 0) {
+      // Testa dello snake: disegna il rettangolo e gli occhi
+      this.ctx.fillRect(segment.x * this.blockSize, segment.y * this.blockSize, this.blockSize, this.blockSize);
+      
+      // Disegna gli occhi
+      this.ctx.fillStyle = '#2C423F'; 
+      const eyeSize = this.blockSize / 4;
+      const eyeOffsetX = this.blockSize / 4;
+      const eyeOffsetY = this.blockSize / 4;
+      const eye1X = segment.x * this.blockSize + eyeOffsetX;
+      const eye1Y = segment.y * this.blockSize + eyeOffsetY;
+      const eye2X = segment.x * this.blockSize + this.blockSize - eyeOffsetX - eyeSize;
+      const eye2Y = segment.y * this.blockSize + eyeOffsetY;
+      this.ctx.fillRect(eye1X, eye1Y, eyeSize, eyeSize);
+      this.ctx.fillRect(eye2X, eye2Y, eyeSize, eyeSize);
+    } else {
+      // Corpo dello snake
+      this.ctx.fillRect(segment.x * this.blockSize, segment.y * this.blockSize, this.blockSize, this.blockSize);
+    }
+  });
+},
+
     handleKeyPress(event) {
       if (event.key.startsWith('Arrow') && !this.showingAlert && this.isGameRunning) {
         this.keysPressed.add(event.key);
@@ -251,7 +274,7 @@ export default {
 
 <style scoped>
 .screen {
-  background-color: rgb(216, 216, 216);
+  background-color: #829191;
   width: 450px;
   height: 450px;
   border: 10px solid rgb(99, 99, 99);
