@@ -26,11 +26,11 @@ export default {
       blockSize: 20,
       numBlocksX: 1,
       numBlocksY: 1,
-      difficulty: 'medium',
+      difficulty: 'easy',
       difficulties: {
-        easy: { numBlocksX: 5, numBlocksY: 5},
+        easy: { numBlocksX: 20, numBlocksY: 20 },
         medium: { numBlocksX: 10, numBlocksY: 10},
-        hard: { numBlocksX: 20, numBlocksY: 20 }
+        hard:{ numBlocksX: 5, numBlocksY: 5 },
       },
       ctx: null,
       snake: [{ x: 10, y: 10 }],
