@@ -7,10 +7,10 @@
     </select>
     <canvas v-if="canvasReady" ref="canvas" :width="canvasSize" :height="canvasSize" class="screen m-auto"></canvas>
     <div v-if="showingAlert || backgroundBlocked" class="overlay" @click="restartGame">
-      <div class="message">
-        <p v-if="isGameWon" class="won_message">HAI VINTO!</p>
-        <p v-else class="lose_message">HAI PERSO!</p>
-        <button class="btn btn-success w-25 mx-auto">Riprova</button>
+      <div class="message":class="isGameWon ? 'win-bg' : 'lose-bg'">
+        <p v-if="isGameWon">HAI VINTO!</p>
+        <p v-else>HAI PERSO!</p>
+        <button class="w-50 mx-auto bg-white">Riprova</button>
       </div>
     </div>
     <button v-if="!isGameRunning" @click="startGame" class="play-button">PLAY</button>
@@ -270,7 +270,6 @@ export default {
   text-align: center;
   flex-direction: column;
   justify-content: center;
-  background-image: url(https://content.imageresizer.com/images/memes/Squidward-cleaning-loser-meme-2.jpg);
   background-size: cover;
   min-width: 400px;
   min-height: 200px;
@@ -279,23 +278,23 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.lose-bg {
+  background-image: url(https://content.imageresizer.com/images/memes/Squidward-cleaning-loser-meme-2.jpg);
+}
+
+.win-bg {
+  background-image: url(https://i.imgflip.com/95p61.jpg?a476208);
+}
+
 .message p {
   margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  text-shadow: 0px 0px 10px black;
 }
 
 .play-button {
-  background-color: #d5d5d5;
-  border: none;
-  color: black;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px; /* Ho modificato la dimensione del font qui */
-  margin: 0 auto; /* Questa regola centrerà orizzontalmente il pulsante */
-  transition-duration: 0.4s;
-  cursor: pointer;
-  border-radius: 12px;
   position: absolute;
   left: 50%; /* Posiziona il pulsante al 50% rispetto al bordo sinistro del suo contenitore */
   top: 50%; /* Posiziona il pulsante al 50% rispetto al bordo superiore del suo contenitore */
@@ -303,17 +302,53 @@ export default {
   font-weight: 700;
 }
 
-
-.play-button:hover {
-  color: white;
-  background-color: #45a049; /* Darker Green */
-}
-
-
 .lose_message {
   font-size: 30px;
   font-weight: 700;
   color: antiquewhite;
   text-shadow: 0 0 20px black;
+}
+
+
+button {
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.7em 2em;
+  border: 3px solid #39824D;
+  border-radius: 2px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+  color: #39824D;
+  text-decoration: none;
+  transition: 0.3s ease all;
+  z-index: 1;
+}
+
+button:before {
+  transition: 0.5s all ease;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  bottom: 0;
+  opacity: 0;
+  content: '';
+  background-color: #022424;
+  z-index: -1;
+}
+
+button:hover, button:focus {
+  color: white;
+}
+
+button:hover:before, button:focus:before {
+  transition: 0.5s all ease;
+  left: 0;
+  right: 0;
+  opacity: 1;
 }
 </style>

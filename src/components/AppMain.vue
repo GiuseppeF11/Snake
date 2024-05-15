@@ -5,7 +5,7 @@ export default {
     data() {
         return {
             isMuted: false,
-            audioSource: "/public/sound/Roku Snake OST - Main Theme.mp3", // Sostituisci con il percorso del tuo file audio
+            audioSource: "/public/sound/Forest.mp3", // Sostituisci con il percorso del tuo file audio
             isAudioPlaying: false // Aggiungi la variabile per tracciare lo stato della riproduzione audio
         };
     },
@@ -57,20 +57,21 @@ export default {
 
 .main-container{
     background-image: url(https://img.freepik.com/free-vector/tropical-leaves-background_23-2148532243.jpg?size=626&ext=jpg&ga=GA1.1.632798143.1712707200&semt=ais);
-    /* filter: brightness(10%); */
+    background-size: contain;
 }
 
 .audio-controls button {
     background: none;
     border: none;
-    font-size: 24px;
-    color: #333;
+    font-size: 40px;
+    width: 50px;
+    color: rgb(255, 255, 255);
     cursor: pointer;
     margin: 0 5px;
-    width: 40px;
-    transition: color 0.3s ease;
+    transition: 0.2s ease;
     &:hover {
-        color: #666;
+        color: #e6e6e6;
+        transform: scale(0.9);
     }
 }
 
