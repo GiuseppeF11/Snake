@@ -2,7 +2,7 @@
 export default {
     data() {
         return {
-
+            
         };
     },
     methods: {
@@ -16,7 +16,7 @@ export default {
         <div class="h-100">
             <section class="row g-0 h-100">
                 <div class="col d-flex align-items-center justify-content-center">
-                    <h4>Punteggio: 55</h4>
+                    
                 </div>
             </section>
         </div>

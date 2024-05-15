@@ -18,14 +18,6 @@ export default {
                 SNAKE
             </h1>
         </div>
-        <!-- <div class="col d-flex justify-content-end ">
-            <div class="row">
-                <div class="col">
-                    
-                </div>
-            </div>
-        </div> -->
-
         
     </header>
 </template>

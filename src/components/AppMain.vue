@@ -36,7 +36,7 @@ export default {
         <section class="audio-player-container row ">
             <div class="audio-controls">
                 <!-- Bottone per mute/unmute -->
-                <button class="text-start px-2" @click="toggleMute">
+                <button class="text-start" @click="toggleMute">
                     <i :class="isMuted ? 'fa fa-volume-off' : 'fa fa-volume-up'"></i>
                 </button>
                 <!-- Bottone per avviare/fermare la riproduzione -->
@@ -70,7 +70,9 @@ export default {
     margin: 0 5px;
     transition: 0.2s ease;
     &:hover {
-        color: #e6e6e6;
+        color: #cbcbcb;
+    }
+    &:active {
         transform: scale(0.9);
     }
 }

@@ -8,18 +8,21 @@
     <canvas v-if="canvasReady" ref="canvas" :width="canvasSize" :height="canvasSize" class="screen m-auto"></canvas>
     <div v-if="showingAlert || backgroundBlocked" class="overlay" @click="restartGame">
       <div class="message":class="isGameWon ? 'win-bg' : 'lose-bg'">
-        <p v-if="isGameWon">HAI VINTO!</p>
-        <p v-else>HAI PERSO!</p>
+        <h3 v-if="isGameWon">HAI VINTO!</h3>
+        <h3 v-else>HAI PERSO!</h3>
+        <h3 class="fs-4 text-decoration-underline  ">Record: {{ score }}</h3>
         <button class="w-50 mx-auto bg-white">Riprova</button>
       </div>
     </div>
-    <button v-if="!isGameRunning" @click="startGame" class="play-button">PLAY</button>
+    <button v-if="!isGameRunning" @click="startGame" class="play-button">Gioca</button>
+
+    <h1 class="score">Punteggio : {{ score }}</h1>
   </div>
+
 </template>
 
 <script>
 export default {
-  props: ['score'],
   data() {
     return {
       canvasReady: false,
@@ -116,7 +119,8 @@ export default {
       this.moveSnake();
       this.draw();
 
-      /* if (this.foodsEaten % 3 === 0 && this.foodsEaten !== 0) {
+      //Incremento della difficoltà
+      /* if (this.foodsEaten % 2 === 0 && this.foodsEaten !== 0) {
         clearInterval(this.gameInterval);
         this.gameInterval = setInterval(this.updateGame, this.currentInterval);
       } */
@@ -157,7 +161,7 @@ export default {
       this.snake.unshift({ x: newX, y: newY });
 
       if (newX === this.food.x && newY === this.food.y) {
-        this.score += 10;
+        this.score += 1;
         this.foodsEaten++;
         this.generateFood();
       } else {
@@ -251,6 +255,8 @@ export default {
   width: 450px;
   height: 450px;
   border: 10px solid rgb(99, 99, 99);
+  border-radius: 2px;
+  box-shadow: 0px 0px 20px black;
 }
 
 .overlay {
@@ -286,7 +292,7 @@ export default {
   background-image: url(https://i.imgflip.com/95p61.jpg?a476208);
 }
 
-.message p {
+.message h3{
   margin-bottom: 10px;
   font-weight: 700;
   font-size: 40px;
@@ -297,9 +303,10 @@ export default {
 .play-button {
   position: absolute;
   left: 50%; /* Posiziona il pulsante al 50% rispetto al bordo sinistro del suo contenitore */
-  top: 50%; /* Posiziona il pulsante al 50% rispetto al bordo superiore del suo contenitore */
+  top: 53%; /* Posiziona il pulsante al 50% rispetto al bordo superiore del suo contenitore */
   transform: translate(-50%, -50%); /* Sposta il pulsante all'indietro del 50% della sua larghezza e altezza rispetto al suo centro */
   font-weight: 700;
+  background-color: aliceblue
 }
 
 .lose_message {
@@ -350,5 +357,21 @@ button:hover:before, button:focus:before {
   left: 0;
   right: 0;
   opacity: 1;
+}
+
+select {
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 2px;
+  text-align: start;
+  padding: 3px 5px;
+  transition: 0.2s all ease;
+}
+
+.score {
+  position: absolute;
+  bottom: 1%;
+  left: 50%;
+  transform: translate(-50%);
 }
 </style>
